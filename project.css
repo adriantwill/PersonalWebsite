@@ -13,6 +13,7 @@ nav {
     display: flex;
     align-items: center;
 }
+
 h1 {
     margin-left: 15px;
     font-size: 30px;
@@ -64,7 +65,7 @@ nav ul li a:hover::after {
     color: black;
 }
 
-h2 {
+.content h2 {
     font-size: 70px;
     margin-bottom: 20px;
 }
