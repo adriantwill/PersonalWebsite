@@ -89,26 +89,103 @@ button {
     cursor: pointer;
 }
 
-.fa, .material-icons {
+.fa {
     padding: 5px;
-    width: 15px;
     text-decoration: none;
     bottom: 12px;
 }
 
 .fa-linkedin {
     position: absolute;
+    width: 30px;
     right: 35px;
-    font-size: 100px;
-    color: #0a66c2;
 }
   
 .email {
     position: absolute;
-    right: 90px;
-    color: #c71610;
+    right:90px;
+    color: #c71610; 
+    width: 30px;
 }
 
 .fa:hover, .material-icons:hover {
     opacity: 0.7;
+}
+.draft h2 {
+    position: absolute;
+    top: 130px;
+    left: 800px;
+}
+.draft-table {
+    border-collapse: collapse;
+    margin: 25px auto;
+    min-width: 1000px;
+    font-size: 0.9em;
+    position: absolute; /* Add this */
+    top: 18%; /* Add this */
+    left: 23%;
+    border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.draft-table img {
+    width: 100px;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-color: #e6e6e6;
+}
+
+.draft-table td, 
+.draft-table th {
+    text-align: center;
+    padding: 12px 15px;
+    max-width: 60px;
+}
+
+.draft-table thead tr{
+    background-color: #E15241;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+.draft-table tbody tr {
+    border-bottom: 1px solid #797979;
+}
+
+.draft-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.draft-table tbody tr:last-of-type {
+    border-bottom: none;
+}
+
+.draft-table tbody tr:nth-of-type(1):hover {
+    background-color: #BB0000;
+    color: white;    
+    transition: 0.1s;
+}
+
+.draft-table tbody tr:nth-of-type(2):hover {
+    background-color: #990000;
+    color: #FFC72C;    
+    transition: 0.1s;
+}
+
+.draft-table tbody tr:nth-of-type(3):hover {
+    background-color: #7BAFD4;
+    color: white;    
+    transition: 0.1s;
+}
+
+.draft-table tbody tr:nth-of-type(4):hover {
+    background-color: #461D7C;
+    color: #FDD023;    
+    transition: 0.1s;
+}
+
+.draft-table tbody tr:hover {
+    background-color: #f1f7ff;
 }
