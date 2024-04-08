@@ -102,6 +102,7 @@ nav ul li a:hover::after {
     top: 130px;
     left: 800px;
 }
+
 .draft-table {
     border-collapse: collapse;
     margin: 25px auto;
@@ -136,7 +137,7 @@ nav ul li a:hover::after {
     font-weight: bold;
 }
 
-.draft-table tbody tr {
+tbody tr {
     border-bottom: 1px solid #797979;
 }
 
@@ -144,32 +145,32 @@ nav ul li a:hover::after {
     background-color: #f3f3f3;
 }
 
-.draft-table tbody tr:last-of-type {
+tbody tr:last-of-type {
     border-bottom: none;
+}
+
+.draft-table tbody tr:hover {
+    transition: 0.1s;
 }
 
 .draft-table tbody tr:nth-of-type(1):hover {
     background-color: #BB0000;
     color: white;    
-    transition: 0.1s;
 }
 
 .draft-table tbody tr:nth-of-type(2):hover {
     background-color: #990000;
     color: #FFC72C;    
-    transition: 0.1s;
 }
 
 .draft-table tbody tr:nth-of-type(3):hover {
     background-color: #7BAFD4;
     color: white;    
-    transition: 0.1s;
 }
 
 .draft-table tbody tr:nth-of-type(4):hover {
     background-color: #461D7C;
     color: #FDD023;    
-    transition: 0.1s;
 }
 
 .draft-table tbody tr:hover {
@@ -179,7 +180,7 @@ nav ul li a:hover::after {
 .form {
     width: 100%; 
     max-width: 820px;
-    height: 400px;
+    height: 430px;
     background-color: #e6e6e6;
     border-radius: 10px; 
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
@@ -204,7 +205,7 @@ form {
 
 input, label, textarea {
     position: relative;
-    margin: 1rem 0;
+    margin: 0.75rem 0;
 }
 
 label{
@@ -255,4 +256,125 @@ textarea.input-type {
     background:#E15241;
     box-shadow: 0 0 35px #E15241;
     color: white;
+}
+
+.draft-order {
+    border-collapse: collapse;
+    margin: 25px auto;
+    min-width: 600px;
+    font-size: 0.9em;
+    position: absolute; /* Add this */
+    top: 18%; /* Add this */
+    left: 57%;
+    border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.draft-order img {
+    width: 100px;
+}
+
+.draft-order td, 
+.draft-order th {
+    text-align: center;
+    padding: 12px;
+    padding-left: 1px;
+    max-width: 60px;
+}
+
+.draft-order thead tr{
+    background-color: #E15241;
+    color: white;
+    font-weight: bold;
+    display: table-row;
+    font-size: 25px;    
+
+}
+
+.draft-order tbody tr {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.draft-order tbody tr:hover {
+    color: white;    
+    transition: 0.3s;
+}
+
+.draft-order tbody tr:nth-of-type(1):hover {
+    background-image: linear-gradient(to right, #C83803, #0B162A 70%);
+}
+
+.draft-order tbody tr:nth-of-type(2):hover {
+    background-image: linear-gradient(to right, #FFB612, #5A1414 70%);
+}
+
+.draft-order tbody tr:nth-of-type(3):hover {
+    background-image: linear-gradient(to right, #C60C30, #002244 90%);
+}
+
+.draft-order tbody tr:nth-of-type(4):hover {
+    background-image: linear-gradient(to right, #97233F, #000000 90%);
+}
+
+.draft-order tbody tr:nth-of-type(5):hover {
+    background-image: linear-gradient(to right, #FFC20E, #0080C6 90%);
+}
+
+.current-games {
+    border-collapse: collapse;
+    margin: 25px auto;
+    min-width: 600px;
+    font-size: 0.9em;
+    position: absolute; /* Add this */
+    top: 18%; /* Add this */
+    left: 10%;
+    border-radius: 5px 5px 5px 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+}
+
+.current-games img {
+    width: 70px;
+    padding-left: 35px;
+    padding-right: 35px;
+    position: relative;
+    vertical-align: middle; /* Add this */
+}
+
+.current-games td, 
+.current-games th {
+    text-align: center;
+    padding: 12px;
+    padding-left: 1px;
+    max-width: 60px;
+    
+}
+
+.current-games thead tr{
+    background-color: #E15241;
+    color: white;
+    display: table-row;
+    font-size: 25px;    
+}
+
+.current-games tbody tr {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.current-games tbody tr:hover {
+    color: white;    
+    transition: 0.3s;
+}
+
+.top-text, .bottom-text{
+    display: block;
+}
+
+.bottom-text {
+    margin-top: 3.33px;
+    font-weight:normal;
 }
