@@ -97,13 +97,13 @@ nav ul li a:hover::after {
 .fa:hover, .material-icons:hover {
     opacity: 0.7;
 }
-.draft h2 {
+.rankings h2 {
     position: absolute;
     top: 130px;
     left: 800px;
 }
 
-.draft-table {
+.rankings-table {
     border-collapse: collapse;
     margin: 25px auto;
     min-width: 1000px;
@@ -116,32 +116,32 @@ nav ul li a:hover::after {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-.draft-table img {
+.rankings-table img {
     width: 100px;
     border-radius: 50%;
     border: 1px solid black;
     background-color: #e6e6e6;
 }
 
-.draft-table td, 
-.draft-table th {
+.rankings-table td, 
+.rankings-table th {
     text-align: center;
     padding: 12px 15px;
     max-width: 60px;
 }
 
-.draft-table thead tr{
+.rankings-table thead tr{
     background-color: #E15241;
     color: white;
     text-align: left;
     font-weight: bold;
 }
 
-tbody tr {
+.rankings-table tbody tr {
     border-bottom: 1px solid #797979;
 }
 
-.draft-table tbody tr:nth-of-type(even) {
+.rankings-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
@@ -149,31 +149,31 @@ tbody tr:last-of-type {
     border-bottom: none;
 }
 
-.draft-table tbody tr:hover {
+.rankings-table tbody tr:hover {
     transition: 0.1s;
 }
 
-.draft-table tbody tr:nth-of-type(1):hover {
+.rankings-table tbody tr:nth-of-type(1):hover {
     background-color: #BB0000;
     color: white;    
 }
 
-.draft-table tbody tr:nth-of-type(2):hover {
+.rankings-table tbody tr:nth-of-type(2):hover {
     background-color: #990000;
     color: #FFC72C;    
 }
 
-.draft-table tbody tr:nth-of-type(3):hover {
+.rankings-table tbody tr:nth-of-type(3):hover {
     background-color: #7BAFD4;
     color: white;    
 }
 
-.draft-table tbody tr:nth-of-type(4):hover {
+.rankings-table tbody tr:nth-of-type(4):hover {
     background-color: #461D7C;
     color: #FDD023;    
 }
 
-.draft-table tbody tr:hover {
+.rankings-table tbody tr:hover {
     background-color: #f1f7ff;
 }
 
@@ -189,7 +189,7 @@ tbody tr:last-of-type {
     transform: translate(60%, 20%);
 }
 
-h3 {
+.form h3 {
     text-align: center;
     margin: 20px;
     font-size: 30px;
@@ -377,4 +377,113 @@ textarea.input-type {
 .bottom-text {
     margin-top: 3.33px;
     font-weight:normal;
+}
+
+.news {
+    width: 100%;
+    position: absolute;
+    top: 15%;
+    color: black;
+}
+
+.news h2 {
+    font-size: 50px;
+    text-align: center;
+    margin-top: -35px;
+}
+
+.news p {
+    margin-top: 25px;
+    font-weight: 100;
+    margin-left: 35px;
+    max-width: 900px;
+}  
+
+.news img {
+    margin-left: 35px;
+    margin-top: 35px;
+    width: 300px;
+    border-radius: 3%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    display:inline-block
+}
+
+.news video{
+    margin-left: 35px;
+    width: 550px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Drop shadow */
+    outline: none; /* Remove outline on focus for aesthetics */
+}
+
+.news h3 {
+    margin-left: 35px;
+    margin-top: 35px;
+    font-size: 25px;
+    color: black;
+}
+
+
+.draft h2 {
+    text-align: center;
+    font-size: 40px; 
+}
+
+.draft-table {
+    margin: 25px auto;
+    border-collapse: collapse;
+    min-width: 1000px;
+}
+
+.player {
+    width: 85px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+.logo {
+    padding-left: 20px;
+    width: 85px;
+}
+
+.position {
+    font-size: 30px;
+}
+
+.playername {
+    font-size: 23px;
+}
+
+.playerpos {
+    font-size: 15px;
+}
+
+.infoabout{
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 15px;
+    max-width: 900px;
+}
+
+.draft-table td, 
+.draft-table th {
+    max-width: 1000px;
+    padding: 12px 15px;
+    padding-bottom: 100px;
+}
+
+.name{
+    margin-left: 1000px;
+}
+
+.draft-table tr {
+    border-left: 5px solid #797979;
+    border-bottom: 1px solid #797979;
+    
+}
+
+.team-name {
+    font-weight: bold;
+    font-size: 15px;
 }
