@@ -399,7 +399,7 @@ textarea.input-type {
     max-width: 900px;
 }  
 
-.news img {
+.apr-24 img {
     margin-left: 35px;
     margin-top: 35px;
     width: 300px;
@@ -408,7 +408,7 @@ textarea.input-type {
     display:inline-block
 }
 
-.news video{
+.apr-24 video{
     margin-left: 35px;
     width: 550px;
     border-radius: 15px;
@@ -421,6 +421,23 @@ textarea.input-type {
     margin-top: 35px;
     font-size: 25px;
     color: black;
+}
+
+.may-1 video {
+    margin-left: 35px;
+    margin-top: 35px;
+    width: 300px;
+    border-radius: 3%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    display:inline-block
+}
+
+.may-1 img{
+    margin-left: 35px;
+    width: 550px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Drop shadow */
+    outline: none; /* Remove outline on focus for aesthetics */
 }
 
 
