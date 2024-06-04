@@ -8,40 +8,39 @@ body {
   background-color: #e6e6e6;
 }
 
-nav {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-}
-
-h1 {
+.container h1 {
   margin-left: 15px;
   font-size: 30px;
 }
 
 .container img {
   width: 50px;
-  margin: auto;
-  margin-left: 625px;
+  padding-left: 20px;
 }
 
-ul {
+.container ul {
   margin-right: 15px;
 }
 
-nav ul li {
+.container nav {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.container nav ul li {
   list-style: none;
   display: inline-block;
   margin: 15px;
 }
 
-nav ul li a {
+.container nav ul li a {
   text-decoration: none;
   color: black;
   text-transform: uppercase;
   position: relative;
 }
-nav ul li a::after {
+.container nav ul li a::after {
   content: "";
   background-color: #e15241;
   height: 3px;
@@ -52,7 +51,7 @@ nav ul li a::after {
   transition: 0.3s;
 }
 
-nav ul li a:hover::after {
+.container nav ul li a:hover::after {
   width: 100%;
 }
 
@@ -459,8 +458,8 @@ textarea.input-type {
 }
 
 .logo {
-  margin-left: auto;
-  margin-right: auto;
+  padding-left: 20px;
+  width: 85px;
 }
 
 .position {
@@ -502,4 +501,9 @@ textarea.input-type {
 .team-name {
   font-weight: bold;
   font-size: 15px;
+}
+
+.standings h2 {
+  font-size: 40px;
+  text-align: center;
 }
