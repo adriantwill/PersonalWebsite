@@ -480,6 +480,7 @@ textarea.input-type {
   margin-left: 20px;
   font-size: 15px;
   max-width: 900px;
+  margin: 4;
 }
 
 .draft-table td,
