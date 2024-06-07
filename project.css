@@ -508,3 +508,43 @@ textarea.input-type {
   font-size: 40px;
   text-align: center;
 }
+
+.matchupbuttons {
+  display: flex;
+  padding: 1em;
+}
+
+.bracket button {
+  font-size: 24px;
+  padding: 1em;
+  width: 8em;
+  border: none;
+  outline: none;
+  color: white;
+  /*clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);*/
+  transition: all 0.5s ease-out;
+}
+
+.bracket button:hover {
+  color: black;
+}
+
+.bracket .away {
+  border-radius: 15px 0 0 15px;
+  background: linear-gradient(to right, red 50%, blue 50%);
+  background-size: 200% 100%;
+  background-position: right;
+}
+.bracket .away:hover {
+  background-position: left;
+}
+
+.bracket .home {
+  border-radius: 0 15px 15px 0;
+  background: linear-gradient(to left, red 50%, blue 50%);
+  background-size: 200% 100%;
+  background-position: left;
+}
+.bracket .home:hover {
+  background-position: right;
+}
