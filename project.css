@@ -522,7 +522,7 @@ textarea.input-type {
   outline: none;
   color: white;
   /*clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);*/
-  transition: all 0.5s ease-out;
+  transition: all 0.25s ease-out;
 }
 
 .bracket button:hover {
