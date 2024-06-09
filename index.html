@@ -5,120 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="This websites is the home page where is has upcoming games and rankings of teams"
+      content="This websites has the contact information and information about the creator of the website"
     />
-    <title>Home Page</title>
+    <title>Contact Me</title>
     <link rel="icon" href="Image/whistle.png" type="image/png" />
-    <link rel="stylesheet" href="project.css" />
+    <link rel="stylesheet" href="format.css" />
   </head>
   <body>
-    <header class="container">
-      <nav>
-        <h1>Matchup Insights</h1>
-        <img src="Image/whistle.png" />
-        <ul class="test">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="picks.html">Rankings</a></li>
-          <li><a href="draft.html">Draft</a></li>
-          <li><a href="players.html">News</a></li>
-          <li><a href="contact.html">About Me</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <table class="draft-order">
-        <thead>
-          <tr>
-            <th colspan="5">2024 Draft Order</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1.</td>
-            <td><img src="Image/bears.png" alt="Player 3" /></td>
-            <td>Chicago Bears</td>
-          </tr>
-          <tr>
-            <td>2.</td>
-            <td><img src="Image/commanders.png" alt="Player 1" /></td>
-            <td>Washington Commanders</td>
-          </tr>
-          <tr>
-            <td>3.</td>
-            <td><img src="Image/patriots.png" alt="Player 2" /></td>
-            <td>New England Patriots</td>
-          </tr>
-          <tr>
-            <td>4.</td>
-            <td><img src="Image/cardinals.png" alt="Player 3" /></td>
-            <td>Arizona Cardinals</td>
-          </tr>
-          <tr>
-            <td>5.</td>
-            <td><img src="Image/chargers.png" alt="Player 3" /></td>
-            <td>Los Angeles Chargers</td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="current-games">
-        <thead>
-          <tr>
-            <th colspan="5">Current Games</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="top-text">
-                <img src="/Image/pistons.png" />Pistons @ 76ers<img
-                  src="/Image/76ers.png"
-                />
-              </div>
-              <div class="bottom-text">Apr 9, 4:00PM MST</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="top-text">
-                <img src="/Image/pacers.png" />Pacers @ Raptors<img
-                  src="/Image/raptors.png"
-                />
-              </div>
-              <div class="bottom-text">Apr 9, 4:00PM MST</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="top-text">
-                <img src="/Image/mavericks.png" />Mavericks @ Hornets<img
-                  src="/Image/hornets.png"
-                />
-              </div>
-              <div class="bottom-text">Apr 9, 4:00PM MST</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="top-text">
-                <img src="/Image/heat.png" />Heat @ Hawks<img
-                  src="/Image/hawks.png"
-                />
-              </div>
-              <div class="bottom-text">Apr 9, 4:30PM MST</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="top-text">
-                <img src="/Image/celtics.png" />Celtics @ Bucks<img
-                  src="/Image/bucks.png"
-                />
-              </div>
-              <div class="bottom-text">Apr 9, 4:30PM MST</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <nav-matchup></nav-matchup>
+    <main class="bracket">
+      <div class="matchupbuttons">
+        <button class="away">Home</button>
+        <button class="home">Away</button>
+      </div>
     </main>
+    <script src="script.js"></script>
   </body>
 </html>
