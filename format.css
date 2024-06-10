@@ -1,7 +1,5 @@
 * {
   font-family: "Verdana", Sans-serif;
-  padding: 0;
-  margin: 0;
 }
 
 body {
@@ -11,7 +9,7 @@ body {
 .container nav {
   display: flex;
   justify-content: space-between;
-  margin: 30px;
+  margin: 20px;
 }
 
 .container h1 {
@@ -19,7 +17,8 @@ body {
 }
 
 .container img {
-  width: 50px;
+  width: 60px;
+  height: 60px;
 }
 
 .container nav ul li {
@@ -194,24 +193,20 @@ textarea.input-type {
   cursor: pointer;
 }
 
-.bracket .away {
+.bracket #away {
   border-radius: 15px 0 0 15px;
-  background: linear-gradient(to right, red 50%, white 50%);
   background-size: 200% 100%;
   background-position: right;
 }
-.bracket .away:hover {
-  color: gold;
+.bracket #away:hover {
   background-position: left;
 }
 
-.bracket .home {
+.bracket #home {
   border-radius: 0 15px 15px 0;
-  background: linear-gradient(to left, purple 50%, white 50%);
   background-size: 200% 100%;
   background-position: left;
 }
-.bracket .home:hover {
-  color: gold;
+.bracket #home:hover {
   background-position: right;
 }
