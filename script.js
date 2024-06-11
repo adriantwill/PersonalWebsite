@@ -25,6 +25,7 @@ async function fetchData(api) {
     }
     const data = await response.json();
     const container = document.querySelector(".bracket");
+    const positions = ["left", "right"];
     let games;
     if (api == "response.json" || "week1.json") {
       games = data.events;
@@ -36,34 +37,27 @@ async function fetchData(api) {
       homeButton.id = "home";
       const awayButton = document.createElement("button");
       awayButton.id = "away";
-      homeButton.innerText =
-        games[i].competitions[0].competitors[0].team.shortDisplayName;
-      homeButton.style.backgroundImage = `linear-gradient(to left, ${
-        teamColors[games[i].competitions[0].competitors[0].team.displayName][0]
-      } 50%, white 50%)`;
-      homeButton.addEventListener("mouseenter", function () {
-        homeButton.style.color =
+      const elements = [homeButton, awayButton];
+      for (let j = 0; j < elements.length; j++) {
+        elements[j].innerText =
+          games[i].competitions[0].competitors[j].team.shortDisplayName;
+        elements[j].style.backgroundImage = `linear-gradient(to ${
+          positions[j]
+        }, ${
           teamColors[
-            games[i].competitions[0].competitors[0].team.displayName
-          ][1];
-      });
-      homeButton.addEventListener("mouseleave", function () {
-        homeButton.style.color = "black";
-      });
-      awayButton.innerText =
-        games[i].competitions[0].competitors[1].team.shortDisplayName;
-      awayButton.style.backgroundImage = `linear-gradient(to right, ${
-        teamColors[games[i].competitions[0].competitors[1].team.displayName][0]
-      } 50%, white 50%)`;
-      awayButton.addEventListener("mouseenter", function () {
-        awayButton.style.color =
-          teamColors[
-            games[i].competitions[0].competitors[1].team.displayName
-          ][1];
-      });
-      awayButton.addEventListener("mouseleave", function () {
-        awayButton.style.color = "black";
-      });
+            games[i].competitions[0].competitors[j].team.displayName
+          ][0]
+        } 50%, white 50%)`;
+        elements[j].addEventListener("mouseenter", function () {
+          elements[j].style.color =
+            teamColors[
+              games[i].competitions[0].competitors[j].team.displayName
+            ][1];
+        });
+        elements[j].addEventListener("mouseleave", function () {
+          elements[j].style.color = "black";
+        });
+      }
       divGroup.appendChild(awayButton);
       divGroup.appendChild(homeButton);
       container.appendChild(divGroup);
