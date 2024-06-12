@@ -38,7 +38,7 @@ async function fetchData(api) {
       const awayButton = document.createElement("button");
       awayButton.id = "away";
       const elements = [homeButton, awayButton];
-      for (let j = 0; j < elements.length; j++) {
+      for (let j = 0; j < 2; j++) {
         elements[j].innerText =
           games[i].competitions[0].competitors[j].team.shortDisplayName;
         elements[j].style.backgroundImage = `linear-gradient(to ${

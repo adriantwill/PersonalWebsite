@@ -198,6 +198,7 @@ textarea.input-type {
   background-size: 200% 100%;
   background-position: right;
 }
+
 .bracket #away:hover {
   background-position: left;
 }
