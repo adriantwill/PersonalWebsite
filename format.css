@@ -181,7 +181,7 @@ textarea.input-type {
 .bracket button {
   font-size: 24px;
   padding: 0.5em;
-  width: 8em;
+  width: 10em;
   border: none;
   outline: none;
   color: black;
@@ -210,4 +210,11 @@ textarea.input-type {
 }
 .bracket #home:hover {
   background-position: right;
+}
+
+#logo {
+  position: absolute;
+  width: 24px; /* Adjust the width as needed */
+  transform: scale();
+  padding: 0.25em;
 }

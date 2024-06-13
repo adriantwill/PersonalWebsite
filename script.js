@@ -26,6 +26,7 @@ async function fetchData(api) {
     const data = await response.json();
     const container = document.querySelector(".bracket");
     const positions = ["left", "right"];
+    const elements = ["home", "away"];
     let games;
     if (api == "response.json" || "week1.json") {
       games = data.events;
@@ -33,33 +34,34 @@ async function fetchData(api) {
     for (let i = 0; i < games.length; i++) {
       const divGroup = document.createElement("div");
       divGroup.id = "matchup";
-      const homeButton = document.createElement("button");
-      homeButton.id = "home";
-      const awayButton = document.createElement("button");
-      awayButton.id = "away";
-      const elements = [homeButton, awayButton];
       for (let j = 0; j < 2; j++) {
-        elements[j].innerText =
+        const button = document.createElement("button");
+        button.id = elements[j];
+        const logo = document.createElement("img");
+        logo.id = "logo";
+        button.innerText =
           games[i].competitions[0].competitors[j].team.shortDisplayName;
-        elements[j].style.backgroundImage = `linear-gradient(to ${
-          positions[j]
-        }, ${
+        button.style.backgroundImage = `linear-gradient(to ${positions[j]}, ${
           teamColors[
             games[i].competitions[0].competitors[j].team.displayName
           ][0]
         } 50%, white 50%)`;
-        elements[j].addEventListener("mouseenter", function () {
-          elements[j].style.color =
+        button.addEventListener("mouseenter", function () {
+          button.style.color =
             teamColors[
               games[i].competitions[0].competitors[j].team.displayName
             ][1];
         });
-        elements[j].addEventListener("mouseleave", function () {
-          elements[j].style.color = "black";
+        button.addEventListener("mouseleave", function () {
+          button.style.color = "black";
         });
+        logo.setAttribute(
+          "src",
+          `https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
+        );
+        button.appendChild(logo);
+        divGroup.prepend(button);
       }
-      divGroup.appendChild(awayButton);
-      divGroup.appendChild(homeButton);
       container.appendChild(divGroup);
     }
   } catch (error) {
