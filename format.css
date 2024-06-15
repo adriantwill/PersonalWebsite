@@ -269,7 +269,7 @@ textarea.input-type {
 }
 
 .menu::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 .menu::-webkit-scrollbar-track {
