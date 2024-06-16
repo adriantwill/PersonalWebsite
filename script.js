@@ -2,9 +2,10 @@ class SpecialHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
         <header class="container">
-      <nav>
+      
         <h1>Matchup Insights</h1>
         <img src="Image/whistle.png" class="logo" />
+        <nav>
         <ul class="test">
           <li><a href="index.html">Home</a></li>
           <li><a href="contact.html">About Me</a></li>
@@ -24,16 +25,28 @@ async function fetchData(api) {
       throw new Error("Could not fetch resource");
     }
     const data = await response.json();
-    const container = document.querySelector(".bracket");
     const positions = ["left", "right"];
     const elements = ["home", "away"];
-    let games;
-    if (api == "response.json" || "week1.json") {
+    const mainContainer = document.querySelector(".games-list");
+    let games = data.events;
+    /*   if (api == "response.json" || "week1.json") {
       games = data.events;
-    }
+      } */
+
     for (let i = 0; i < games.length; i++) {
       const divGroup = document.createElement("div");
+      let container = document.querySelector(
+        `.${dateConverter(games[i].date)}`
+      );
+      if (container.childElementCount == 0) {
+        mainTitle = document.createElement("h3");
+        mainTitle.innerText = dateConverter(games[i].date).toUpperCase();
+        container.insertAdjacentElement("beforebegin", mainTitle);
+      }
       divGroup.id = "matchup";
+      const title = document.createElement("h3");
+      title.id = "game-title";
+      title.innerText = games[i].status.type.detail;
       for (let j = 0; j < 2; j++) {
         const button = document.createElement("button");
         button.id = elements[j];
@@ -62,11 +75,25 @@ async function fetchData(api) {
         button.appendChild(logo);
         divGroup.prepend(button);
       }
+      divGroup.prepend(title);
       container.appendChild(divGroup);
+      if (container.querySelectorAll("div").length >= 3) {
+        container.style.gridTemplateColumns = "repeat(3, 1fr)";
+      } else {
+        container.style.gridTemplateColumns = `repeat(${
+          container.querySelectorAll("div").length
+        }, 1fr)`;
+      }
     }
   } catch (error) {
     console.error(error);
   }
+}
+
+function dateConverter(dateString) {
+  const date = new Date(dateString);
+  const options = { weekday: "long" };
+  return date.toLocaleDateString("en-US", options).toLowerCase();
 }
 
 const teamColors = {
@@ -103,31 +130,3 @@ const teamColors = {
   "Tennessee Titans": ["#0C2340", "#4B92DB", "#FFFFFF"],
   "Washington Commanders": ["#773141", "#FFB612"],
 };
-
-const dropdowns = document.querySelectorAll(".dropdown");
-
-dropdowns.forEach((dropdown) => {
-  const select = dropdown.querySelector(".select");
-  const menu = dropdown.querySelector(".menu");
-  const options = dropdown.querySelector(".menu li");
-  const selected = dropdown.querySelector(".selected");
-  select.addEventListener("click", () => {
-    select.classList.toggle("select-clicked");
-    menu.classList.toggle("menu-open");
-  });
-  options.forEach((option) => {
-    option.addEventListener("click", () => {
-      selected.innerText = option.innerText;
-      selected.classList.add("text-fade-in");
-      setTimeout(() => {
-        selected.classList.remove("text-fade-in");
-      }, 300);
-      select.classList.remove("select-clicked");
-      menu.classList.remove("menu-open");
-      options.forEach((option) => {
-        option.classList.remove("active");
-      });
-      option.classList.add("active");
-    });
-  });
-});
