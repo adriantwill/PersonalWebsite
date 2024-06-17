@@ -181,9 +181,11 @@ textarea.input-type {
   color: white;
 }
 
-.matchupbuttons {
-  display: flex;
-  padding: 1em;
+.bracket h1 {
+  display: grid;
+  justify-content: center;
+  font-size: 48px;
+  margin: 15px;
 }
 
 .bracket button {
@@ -195,28 +197,35 @@ textarea.input-type {
   outline: none;
   color: black;
   transition: all 0.25s ease-out;
+  border: 1px solid black;
+}
+
+.bracket .button-group {
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 }
 
 .bracket button:hover {
   cursor: pointer;
 }
 
-.bracket #away {
+.bracket .away {
   border-radius: 15px 0 0 15px;
   background-size: 200% 100%;
   background-position: right;
+  border-right: none;
 }
 
-.bracket #away:hover {
+.bracket .away:hover {
   background-position: left;
 }
 
-.bracket #home {
+.bracket .home {
   border-radius: 0 15px 15px 0;
   background-size: 200% 100%;
   background-position: left;
 }
-.bracket #home:hover {
+.bracket .home:hover {
   background-position: right;
 }
 
@@ -226,22 +235,26 @@ textarea.input-type {
   float: left;
 }
 
-#home #logo {
+.home #logo {
   float: right;
 }
 
-.games-list {
+#games-list {
   display: grid;
   justify-items: center;
 }
+.games-list h2 {
+  margin-top: 15px;
+}
 
-.wednesday,
-.thursday,
-.friday,
-.saturday,
-.sunday,
-.monday {
+.weekday {
   display: grid;
   column-gap: 5em;
   align-items: center;
+}
+
+#game-title {
+  display: grid;
+  justify-items: center;
+  margin: 15px 10px 10px 10px;
 }
