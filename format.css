@@ -185,7 +185,7 @@ textarea.input-type {
   display: grid;
   justify-content: center;
   font-size: 48px;
-  margin: 15px;
+  margin: 15px 15px 0 15px;
 }
 
 .bracket button {
@@ -243,8 +243,9 @@ textarea.input-type {
   display: grid;
   justify-items: center;
 }
-.games-list h2 {
-  margin-top: 15px;
+
+#games-list h2 {
+  margin-top: 30px;
 }
 
 .weekday {
@@ -257,4 +258,8 @@ textarea.input-type {
   display: grid;
   justify-items: center;
   margin: 15px 10px 10px 10px;
+}
+
+select {
+  display: inline-block;
 }

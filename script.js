@@ -64,9 +64,13 @@ function createMatchup(games) {
       button.id = games[i].competitions[0].competitors[j].team.shortDisplayName;
       const logo = document.createElement("img");
       logo.id = "logo";
-      button.innerText =
+      const name = document.createElement("span");
+      name.className = "name";
+      name.innerText =
         games[i].competitions[0].competitors[j].team.shortDisplayName;
+      button.appendChild(name);
       button.appendChild(logo);
+
       logo.setAttribute(
         "src",
         `https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
@@ -105,7 +109,7 @@ function createSelect() {
   for (let i = 1; i <= 17; i++) {
     const option = document.createElement("option");
     option.innerText = `Week ${i}`;
-    option.onclick = "fetchData('week1.json')";
+    option.onclick = `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${i}')`;
     select.appendChild(option);
   }
 }
