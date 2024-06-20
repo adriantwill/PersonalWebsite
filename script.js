@@ -109,7 +109,10 @@ function createSelect() {
   for (let i = 1; i <= 17; i++) {
     const option = document.createElement("option");
     option.innerText = `Week ${i}`;
-    option.onclick = `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${i}')`;
+    option.setAttribute(
+      "onclick",
+      `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${i}')`
+    );
     select.appendChild(option);
   }
 }
