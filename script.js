@@ -70,7 +70,6 @@ function createMatchup(games) {
         games[i].competitions[0].competitors[j].team.shortDisplayName;
       button.appendChild(name);
       button.appendChild(logo);
-
       logo.setAttribute(
         "src",
         `https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
@@ -79,15 +78,59 @@ function createMatchup(games) {
         if (button.style.backgroundColor == "") {
           button.style.backgroundColor = `${teamColors[button.textContent][0]}`;
           button.style.color = teamColors[button.textContent][1];
+          for (let k = 0; k < 2; k++) {
+            teamRecords[
+              games[i].competitions[0].competitors[Math.abs(k - j)].team
+                .shortDisplayName
+            ][k]++;
+          }
           const other = document.getElementById(
             games[i].competitions[0].competitors[1 - j].team.shortDisplayName
           );
+          if (other.style.backgroundColor != "") {
+            for (let k = 0; k < 2; k++) {
+              teamRecords[
+                games[i].competitions[0].competitors[Math.abs(1 - k - j)].team
+                  .shortDisplayName
+              ][k]--;
+            }
+          }
           other.style.backgroundColor = "";
           other.style.color = "black";
         } else {
           button.style.backgroundColor = "";
           button.style.color = "black";
+          for (let k = 0; k < 2; k++) {
+            teamRecords[
+              games[i].competitions[0].competitors[Math.abs(k - j)].team
+                .shortDisplayName
+            ][k]--;
+          }
         }
+        console.log(
+          games[i].competitions[0].competitors[j].team.shortDisplayName,
+          teamRecords[
+            games[i].competitions[0].competitors[j].team.shortDisplayName
+          ][0]
+        );
+        console.log(
+          games[i].competitions[0].competitors[j].team.shortDisplayName,
+          teamRecords[
+            games[i].competitions[0].competitors[j].team.shortDisplayName
+          ][1]
+        );
+        console.log(
+          games[i].competitions[0].competitors[1 - j].team.shortDisplayName,
+          teamRecords[
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          ][0]
+        );
+        console.log(
+          games[i].competitions[0].competitors[1 - j].team.shortDisplayName,
+          teamRecords[
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          ][1]
+        );
       });
       buttonGroup.prepend(button);
     }
@@ -105,7 +148,7 @@ function createMatchup(games) {
 }
 
 function createSelect() {
-  const select = document.getElementById("week-select");
+  const week = document.getElementById("week-select");
   for (let i = 1; i <= 17; i++) {
     const option = document.createElement("option");
     option.innerText = `Week ${i}`;
@@ -113,7 +156,18 @@ function createSelect() {
       "onclick",
       `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${i}')`
     );
-    select.appendChild(option);
+    week.appendChild(option);
+  }
+  const team = document.getElementById("team-select");
+  for (let i = 0; i < 32; i++) {
+    const option = document.createElement("option");
+    console.log(teamRecords[i]);
+    option.innerText = teamRecords[i];
+    option.setAttribute(
+      "onclick",
+      `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${i}')`
+    );
+    team.appendChild(option);
   }
 }
 
@@ -128,37 +182,72 @@ function dateConverter(dateString) {
   return `${weekday}, ${month} ${day}`;
 }
 
+let teamRecords = {
+  Cardinals: [0, 0],
+  Falcons: [0, 0],
+  Ravens: [0, 0],
+  Bills: [0, 0],
+  Panthers: [0, 0],
+  Bears: [0, 0],
+  Bengals: [0, 0],
+  Browns: [0, 0],
+  Cowboys: [0, 0],
+  Broncos: [0, 0],
+  Lions: [0, 0],
+  Packers: [0, 0],
+  Texans: [0, 0],
+  Colts: [0, 0],
+  Jaguars: [0, 0],
+  Chiefs: [0, 0],
+  Raiders: [0, 0],
+  Chargers: [0, 0],
+  Rams: [0, 0],
+  Dolphins: [0, 0],
+  Vikings: [0, 0],
+  Patriots: [0, 0],
+  Saints: [0, 0],
+  Giants: [0, 0],
+  Jets: [0, 0],
+  Eagles: [0, 0],
+  Steelers: [0, 0],
+  "49ers": [0, 0],
+  Seahawks: [0, 0],
+  Buccaneers: [0, 0],
+  Titans: [0, 0],
+  Commanders: [0, 0],
+};
+
 const teamColors = {
   Cardinals: ["#97233F", "#000000"],
-  Falcons: ["#A71930", "#000000", "#A5ACAF"],
-  Ravens: ["#241773", "#9E7C0C", "#000000"],
+  Falcons: ["#A71930", "#000000"],
+  Ravens: ["#241773", "#9E7C0C"],
   Bills: ["#00338D", "#C60C30"],
-  Panthers: ["#0085CA", "#101820", "#A5ACAF", "#BFC0BF"],
-  Bears: ["#0B162A", "#C83803", "#DD4814", "#FFFFFF"],
-  Bengals: ["#FB4F14", "#000000", "#FFFFFF"],
-  Browns: ["#311D00", "#FF3C00", "#FFFFFF"],
-  Cowboys: ["#041E42", "#869397", "#FFFFFF"],
-  Broncos: ["#FB4F14", "#002244", "#FFFFFF"],
-  Lions: ["#0076B6", "#B0B7BC", "#FFFFFF"],
+  Panthers: ["#0085CA", "#101820"],
+  Bears: ["#0B162A", "#C83803"],
+  Bengals: ["#FB4F14", "#000000"],
+  Browns: ["#311D00", "#FF3C00"],
+  Cowboys: ["#041E42", "#869397"],
+  Broncos: ["#FB4F14", "#002244"],
+  Lions: ["#0076B6", "#B0B7BC"],
   Packers: ["#203731", "#FFB81C"],
-  Texans: ["#03202F", "#A71930", "#FFFFFF"],
-  Colts: ["#002C5F", "#A5ACAF", "#FFFFFF"],
-  Jaguars: ["#006778", "#D7A22A", "#D7A22A", "#9F792C"],
+  Texans: ["#03202F", "#A71930"],
+  Colts: ["#002C5F", "#A5ACAF"],
+  Jaguars: ["#006778", "#D7A22A"],
   Chiefs: ["#E31837", "#FFB81C"],
-  Raiders: ["#000000", "#A5ACAF", "#FFFFFF"],
-  Chargers: ["#0072CE", "#FFB81C", "#002244", "#FFFFFF"],
-  Rams: ["#003594", "#ffa300", "#B3995D"],
-  Dolphins: ["#008E97", "#F58220", "#FFFFFF", "#005778"],
-  Vikings: ["#4F2683", "#FFC62F", "#FFFFFF"],
-  Patriots: ["#002244", "#C60C30", "#B0B7BC", "#FFFFFF"],
+  Raiders: ["#000000", "#A5ACAF"],
+  Chargers: ["#0072CE", "#FFB81C"],
+  Rams: ["#003594", "#ffa300"],
+  Dolphins: ["#008E97", "#F58220"],
+  Vikings: ["#4F2683", "#FFC62F"],
+  Patriots: ["#002244", "#C60C30"],
   Saints: ["#D3BC8D", "#101820"],
-  Giants: ["#0B2265", "#a71930", "#a5acaf"],
+  Giants: ["#0B2265", "#a71930"],
   Jets: ["#203731", "#FFFFFF"],
-  Eagles: ["#004C54", "#A5ACAF", "#FFFFFF"],
+  Eagles: ["#004C54", "#A5ACAF"],
   Steelers: ["#FFB81C", "#101820"],
-  "49ers": ["#AA0000", "#B3995D", "#FFFFFF"],
-  Seahawks: ["#002244", "#69BE28", "#A5ACAF", "#FFFFFF"],
-  Buccaneers: ["#D50A0A", "#34302B", "#FF7900", "#FFFFFF"],
-  Titans: ["#0C2340", "#4B92DB", "#FFFFFF"],
+  "49ers": ["#AA0000", "#B3995D"],
+  Seahawks: ["#002244", "#69BE28"],
+  Buccaneers: ["#D50A0A", "#34302B"],
+  Titans: ["#0C2340", "#4B92DB"],
   Commanders: ["#773141", "#FFB612"],
 };

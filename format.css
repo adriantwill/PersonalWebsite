@@ -203,6 +203,7 @@ textarea.input-type {
 .bracket .button-group {
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  margin-bottom: 10px;
 }
 
 .bracket button:hover {
@@ -260,6 +261,14 @@ textarea.input-type {
   margin: 15px 10px 10px 10px;
 }
 
-select {
+.select-container {
   display: inline-block;
+}
+
+select {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  font-size: 1em;
+  padding: 0.75em 3em;
+  border: 0;
+  border-radius: 10px;
 }
