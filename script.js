@@ -2,7 +2,7 @@ class SpecialHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
         <header class="container">
-        <h1>Matchup Insights</h1>
+        <h1>Adrian Will</h1>
         <img src="Image/whistle.png" class="logo" />
         <nav>
         <ul class="test">
@@ -49,11 +49,10 @@ function createMatchup(games) {
   const gamesList = document.getElementById("games-list");
   gamesList.innerHTML = "";
   const singleTitle = document.getElementById("single-title");
-  if (games.events.length == 17) {
-    singleTitle.innerText = games.team.displayName;
-  } else {
-    singleTitle.innerText = `Week ${games.week.number}`;
-  }
+  singleTitle.innerText =
+    games.events.length === 17
+      ? games.team.displayName
+      : `Week ${games.week.number}`;
   games = games.events;
   for (let i = 0; i < games.length; i++) {
     const divGroup = document.createElement("div");
@@ -61,20 +60,21 @@ function createMatchup(games) {
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
     const title = document.createElement("h3");
-    title.id = "game-title";
+    title.className = "game-title";
     mainTitle = document.createElement("h2");
-    if (games.length == 17) {
+    if (games.length === 17) {
       mainTitle.innerText = games[i].week.text;
       divGroup.appendChild(mainTitle);
       title.innerText = games[i].competitions[0].status.type.detail;
       gamesList.appendChild(divGroup);
-      gamesList.style.gridTemplateColumns = "repeat(3, 1fr)";
+      gamesList.style.gridTemplateColumns =
+        "repeat(auto-fit, minmax(550px, 1fr))";
+      gamesList.style.display = "grid";
     } else {
-      gamesList.style.gridTemplateColumns = "";
       let container = document.getElementById(
         games[i].status.type.detail.slice(0, 3).toLowerCase()
       );
-      if (container == null) {
+      if (container === null) {
         mainTitle.innerText = dateConverter(games[i].date);
         gamesList.appendChild(mainTitle);
         container = document.createElement("div");
@@ -84,20 +84,16 @@ function createMatchup(games) {
       }
       container.appendChild(divGroup);
       title.innerText = games[i].status.type.detail.slice(-11);
-      if (container.querySelectorAll(".button-group").length >= 4) {
-        container.style.gridTemplateColumns = "repeat(3, 1fr)";
-      } else {
-        container.style.gridTemplateColumns = `repeat(${
-          container.querySelectorAll(".button-group").length + 1
-        }, 1fr)`;
-      }
+      gamesList.style.display = "";
+      container.style.gridTemplateColumns =
+        "repeat(auto-fit, minmax(550px, 1fr))";
     }
     for (let j = 0; j < 2; j++) {
       const button = document.createElement("button");
       button.className = elements[j];
       button.id = games[i].competitions[0].competitors[j].team.shortDisplayName;
       const logo = document.createElement("img");
-      logo.id = "logo";
+      logo.className = "logo";
       const name = document.createElement("span");
       name.className = "name";
       name.innerText =
@@ -109,7 +105,7 @@ function createMatchup(games) {
         `https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
       );
       button.addEventListener("click", function () {
-        if (button.style.backgroundColor == "") {
+        if (button.style.backgroundColor === "") {
           button.style.backgroundColor = `${teamColors[button.textContent][0]}`;
           button.style.color = teamColors[button.textContent][1];
           for (let k = 0; k < 2; k++) {
@@ -121,7 +117,7 @@ function createMatchup(games) {
           const other = document.getElementById(
             games[i].competitions[0].competitors[1 - j].team.shortDisplayName
           );
-          if (other.style.backgroundColor != "") {
+          if (other.style.backgroundColor !== "") {
             for (let k = 0; k < 2; k++) {
               teamRecords[
                 games[i].competitions[0].competitors[Math.abs(1 - k - j)].team
@@ -176,13 +172,13 @@ async function createSelect() {
 window.onload = fetchData("week1.json");
 window.onload = createSelect();
 
-function dateConverter(dateString) {
+const dateConverter = (dateString) => {
   const date = new Date(dateString);
   const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
   const month = date.toLocaleDateString("en-US", { month: "long" });
   const day = date.toLocaleDateString("en-US", { day: "numeric" });
   return `${weekday}, ${month} ${day}`;
-}
+};
 
 let teamRecords = {
   Cardinals: [0, 0],
