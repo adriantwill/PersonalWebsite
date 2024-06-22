@@ -24,11 +24,21 @@ async function fetchData(api) {
       throw new Error("Could not fetch resource");
     }
     const data = await response.json();
-    let games = data.events;
-    if (api == "response.json" || "week1.json") {
-      games = data.events;
+    createMatchup(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function fetchTeams(api) {
+  try {
+    const response = await fetch(api);
+    if (!response.ok) {
+      throw new Error("Could not fetch resource");
     }
-    createMatchup(games);
+    const data = await response.json();
+    const games = data.sports[0].leagues[0].teams;
+    return games;
   } catch (error) {
     console.error(error);
   }
@@ -38,26 +48,50 @@ function createMatchup(games) {
   const elements = ["home", "away"];
   const gamesList = document.getElementById("games-list");
   gamesList.innerHTML = "";
+  const singleTitle = document.getElementById("single-title");
+  if (games.events.length == 17) {
+    singleTitle.innerText = games.team.displayName;
+  } else {
+    singleTitle.innerText = `Week ${games.week.number}`;
+  }
+  games = games.events;
   for (let i = 0; i < games.length; i++) {
     const divGroup = document.createElement("div");
     divGroup.id = "matchup";
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
-    let container = document.getElementById(
-      games[i].status.type.detail.slice(0, 3).toLowerCase()
-    );
-    if (container == null) {
-      mainTitle = document.createElement("h2");
-      mainTitle.innerText = dateConverter(games[i].date);
-      gamesList.appendChild(mainTitle);
-      container = document.createElement("div");
-      container.className = "weekday";
-      container.id = games[i].status.type.detail.slice(0, 3).toLowerCase();
-      gamesList.appendChild(container);
-    }
     const title = document.createElement("h3");
     title.id = "game-title";
-    title.innerText = games[i].status.type.detail.slice(-11);
+    mainTitle = document.createElement("h2");
+    if (games.length == 17) {
+      mainTitle.innerText = games[i].week.text;
+      divGroup.appendChild(mainTitle);
+      title.innerText = games[i].competitions[0].status.type.detail;
+      gamesList.appendChild(divGroup);
+      gamesList.style.gridTemplateColumns = "repeat(3, 1fr)";
+    } else {
+      gamesList.style.gridTemplateColumns = "";
+      let container = document.getElementById(
+        games[i].status.type.detail.slice(0, 3).toLowerCase()
+      );
+      if (container == null) {
+        mainTitle.innerText = dateConverter(games[i].date);
+        gamesList.appendChild(mainTitle);
+        container = document.createElement("div");
+        container.className = "weekday";
+        container.id = games[i].status.type.detail.slice(0, 3).toLowerCase();
+        gamesList.appendChild(container);
+      }
+      container.appendChild(divGroup);
+      title.innerText = games[i].status.type.detail.slice(-11);
+      if (container.querySelectorAll(".button-group").length >= 4) {
+        container.style.gridTemplateColumns = "repeat(3, 1fr)";
+      } else {
+        container.style.gridTemplateColumns = `repeat(${
+          container.querySelectorAll(".button-group").length + 1
+        }, 1fr)`;
+      }
+    }
     for (let j = 0; j < 2; j++) {
       const button = document.createElement("button");
       button.className = elements[j];
@@ -107,49 +141,17 @@ function createMatchup(games) {
             ][k]--;
           }
         }
-        console.log(
-          games[i].competitions[0].competitors[j].team.shortDisplayName,
-          teamRecords[
-            games[i].competitions[0].competitors[j].team.shortDisplayName
-          ][0]
-        );
-        console.log(
-          games[i].competitions[0].competitors[j].team.shortDisplayName,
-          teamRecords[
-            games[i].competitions[0].competitors[j].team.shortDisplayName
-          ][1]
-        );
-        console.log(
-          games[i].competitions[0].competitors[1 - j].team.shortDisplayName,
-          teamRecords[
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          ][0]
-        );
-        console.log(
-          games[i].competitions[0].competitors[1 - j].team.shortDisplayName,
-          teamRecords[
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          ][1]
-        );
       });
       buttonGroup.prepend(button);
     }
+    divGroup.appendChild(title);
     divGroup.appendChild(buttonGroup);
-    divGroup.prepend(title);
-    container.appendChild(divGroup);
-    if (container.querySelectorAll(".button-group").length >= 3) {
-      container.style.gridTemplateColumns = "repeat(3, 1fr)";
-    } else {
-      container.style.gridTemplateColumns = `repeat(${
-        container.querySelectorAll(".button-group").length
-      }, 1fr)`;
-    }
   }
 }
 
-function createSelect() {
+async function createSelect() {
   const week = document.getElementById("week-select");
-  for (let i = 1; i <= 17; i++) {
+  for (let i = 1; i <= 18; i++) {
     const option = document.createElement("option");
     option.innerText = `Week ${i}`;
     option.setAttribute(
@@ -158,14 +160,14 @@ function createSelect() {
     );
     week.appendChild(option);
   }
-  const team = document.getElementById("team-select");
+  const team = document.getElementById("team-select"); //add team based on team.json and id for calling api
+  teamList = await fetchTeams("teams.json");
   for (let i = 0; i < 32; i++) {
     const option = document.createElement("option");
-    console.log(teamRecords[i]);
-    option.innerText = teamRecords[i];
+    option.innerText = teamList[i].team.shortDisplayName;
     option.setAttribute(
       "onclick",
-      `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${i}')`
+      `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamList[i].team.id}/schedule?season=2024')`
     );
     team.appendChild(option);
   }
