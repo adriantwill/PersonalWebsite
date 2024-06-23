@@ -181,7 +181,12 @@ textarea.input-type {
   color: white;
 }
 
+.bracket h2 {
+  min-width: 480px;
+}
+
 .bracket h1 {
+  min-width: 480px;
   display: flex;
   justify-content: center;
   font-size: 48px;

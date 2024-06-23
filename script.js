@@ -68,7 +68,7 @@ function createMatchup(games) {
       title.innerText = games[i].competitions[0].status.type.detail;
       gamesList.appendChild(divGroup);
       gamesList.style.gridTemplateColumns =
-        "repeat(auto-fit, minmax(550px, 1fr))";
+        "repeat(auto-fit, minmax(480px, 1fr))";
       gamesList.style.display = "grid";
     } else {
       let container = document.getElementById(
@@ -86,7 +86,7 @@ function createMatchup(games) {
       title.innerText = games[i].status.type.detail.slice(-11);
       gamesList.style.display = "";
       container.style.gridTemplateColumns =
-        "repeat(auto-fit, minmax(550px, 1fr))";
+        "repeat(auto-fit, minmax(480px, 1fr))";
     }
     for (let j = 0; j < 2; j++) {
       const button = document.createElement("button");
