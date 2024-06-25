@@ -166,6 +166,18 @@ async function createSelect() {
       `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamList[i].team.id}/schedule?season=2024')`
     );
     team.appendChild(option);
+    const tbody = document.getElementById("team-table-body");
+    const tableRow = document.createElement("tr");
+    const tableDetailName = document.createElement("td");
+    const tableDetailWins = document.createElement("td");
+    const tableDetailLosses = document.createElement("td");
+    tableDetailName.innerText = teamList[i].team.shortDisplayName;
+    tableDetailWins.innerText = 0;
+    tableDetailLosses.innerText = 0;
+    tableRow.appendChild(tableDetailName);
+    tableRow.appendChild(tableDetailWins);
+    tableRow.appendChild(tableDetailLosses);
+    tbody.appendChild(tableRow);
   }
 }
 
