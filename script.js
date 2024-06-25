@@ -145,8 +145,6 @@ function createMatchup(games) {
   }
 }
 
-let teamRecords = {};
-
 async function createSelect() {
   const week = document.getElementById("week-select");
   for (let i = 1; i <= 18; i++) {
@@ -168,7 +166,12 @@ async function createSelect() {
       `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamList[i].team.id}/schedule?season=2024')`
     );
     team.appendChild(option);
-    teamRecords[teamList[i].team.shortDisplayName];
+  }
+}
+
+function resetRecords() {
+  for (let team in teamRecords) {
+    teamRecords[team] = [0, 0];
   }
 }
 
