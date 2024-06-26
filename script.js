@@ -137,42 +137,6 @@ function createMatchup(games) {
             ][k]--;
           }
         }
-        const hTeamWins = document.getElementById(
-          `${
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          }-wins`
-        );
-        hTeamWins.innerText =
-          teamRecords[
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          ][0];
-        const hTeamLosses = document.getElementById(
-          `${
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          }-wins`
-        );
-        hTeamLosses.innerText =
-          teamRecords[
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          ][1];
-        const hTeamWins = document.getElementById(
-          `${
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          }-wins`
-        );
-        hTeamWins.innerText =
-          teamRecords[
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          ][0];
-        const hTeamWins = document.getElementById(
-          `${
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          }-wins`
-        );
-        hTeamWins.innerText =
-          teamRecords[
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          ][0];
       });
       buttonGroup.prepend(button);
     }
