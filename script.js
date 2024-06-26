@@ -137,6 +137,12 @@ function createMatchup(games) {
             ][k]--;
           }
         }
+        const team = document.getElementById(
+          games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+        );
+        const ateam = document.getElementById(
+          games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+        );
       });
       buttonGroup.prepend(button);
     }
@@ -168,6 +174,7 @@ async function createSelect() {
     team.appendChild(option);
     const tbody = document.getElementById("team-table-body");
     const tableRow = document.createElement("tr");
+    tableRow.id = `${teamList[i].team.shortDisplayName}Table`;
     const tableDetailName = document.createElement("td");
     const tableDetailWins = document.createElement("td");
     const tableDetailLosses = document.createElement("td");
