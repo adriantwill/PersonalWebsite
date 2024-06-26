@@ -137,12 +137,42 @@ function createMatchup(games) {
             ][k]--;
           }
         }
-        const team = document.getElementById(
-          games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+        const hTeamWins = document.getElementById(
+          `${
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          }-wins`
         );
-        const ateam = document.getElementById(
-          games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+        hTeamWins.innerText =
+          teamRecords[
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          ][0];
+        const hTeamLosses = document.getElementById(
+          `${
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          }-wins`
         );
+        hTeamLosses.innerText =
+          teamRecords[
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          ][1];
+        const hTeamWins = document.getElementById(
+          `${
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          }-wins`
+        );
+        hTeamWins.innerText =
+          teamRecords[
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          ][0];
+        const hTeamWins = document.getElementById(
+          `${
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          }-wins`
+        );
+        hTeamWins.innerText =
+          teamRecords[
+            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
+          ][0];
       });
       buttonGroup.prepend(button);
     }
@@ -172,19 +202,25 @@ async function createSelect() {
       `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamList[i].team.id}/schedule?season=2024')`
     );
     team.appendChild(option);
-    const tbody = document.getElementById("team-table-body");
     const tableRow = document.createElement("tr");
-    tableRow.id = `${teamList[i].team.shortDisplayName}Table`;
     const tableDetailName = document.createElement("td");
     const tableDetailWins = document.createElement("td");
     const tableDetailLosses = document.createElement("td");
     tableDetailName.innerText = teamList[i].team.shortDisplayName;
     tableDetailWins.innerText = 0;
+    tableDetailWins.id = `${teamList[i].team.shortDisplayName}-wins`;
     tableDetailLosses.innerText = 0;
+    tableDetailLosses.id = `${teamList[i].team.shortDisplayName}-losses`;
     tableRow.appendChild(tableDetailName);
     tableRow.appendChild(tableDetailWins);
     tableRow.appendChild(tableDetailLosses);
-    tbody.appendChild(tableRow);
+    if (teamList[i].team.conference == "afc") {
+      const tbody = document.getElementById("afc-table");
+      tbody.appendChild(tableRow);
+    } else {
+      const tbody = document.getElementById("nfc-table");
+      tbody.appendChild(tableRow);
+    }
   }
 }
 
