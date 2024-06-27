@@ -145,6 +145,8 @@ function createMatchup(games) {
   }
 }
 
+//create default elements
+
 async function createSelect() {
   const week = document.getElementById("week-select");
   for (let i = 1; i <= 18; i++) {
