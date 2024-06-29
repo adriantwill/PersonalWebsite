@@ -128,6 +128,21 @@ function createMatchup(games) {
           win.innerText = teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k];
           loss.innerText =
             teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][Math.abs(1 - k)];
+          percent = document.getElementById(
+            `${games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName}-2`
+          );
+          if (
+            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][1] +
+              teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][0] ===
+            0
+          ) {
+            percent.innerText = 0.0001;
+          } else {
+            percent.innerText =
+              teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][0] /
+              (teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][1] +
+                teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][0]);
+          }
         }
         sorter(document.getElementById("nfc-table"), 1);
         sorter(document.getElementById("afc-table"), 1);
@@ -166,14 +181,18 @@ async function createSelect() {
     const tableDetailName = document.createElement("td");
     const tableDetailWins = document.createElement("td");
     const tableDetailLosses = document.createElement("td");
+    const tableDetailPercentage = document.createElement("td");
     tableDetailName.innerText = teamList[i].team.shortDisplayName;
     tableDetailWins.innerText = teamRecords[teamList[i].team.shortDisplayName][0];
     tableDetailWins.id = `${teamList[i].team.shortDisplayName}-0`;
     tableDetailLosses.innerText = teamRecords[teamList[i].team.shortDisplayName][1];
     tableDetailLosses.id = `${teamList[i].team.shortDisplayName}-1`;
+    tableDetailPercentage.innerText = 0.0001;
+    tableDetailPercentage.id = `${teamList[i].team.shortDisplayName}-2`;
     tableRow.appendChild(tableDetailName);
     tableRow.appendChild(tableDetailWins);
     tableRow.appendChild(tableDetailLosses);
+    tableRow.appendChild(tableDetailPercentage);
     if (teamList[i].team.conference == "afc") {
       const tbody = document.getElementById("afc-tbody");
       tbody.appendChild(tableRow);
@@ -194,8 +213,8 @@ function sorter(table, column) {
   const tBody = table.tBodies[0];
   const rows = Array.from(tBody.querySelectorAll("tr"));
   const sortedRows = rows.sort((a, b) => {
-    const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
-    const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+    const aColText = a.querySelector(`td:nth-child(${column + 3})`).textContent.trim();
+    const bColText = b.querySelector(`td:nth-child(${column + 3})`).textContent.trim();
     return aColText > bColText ? -1 : 1;
   });
   while (tBody.firstChild) {
