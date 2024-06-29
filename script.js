@@ -49,10 +49,7 @@ function createMatchup(games) {
   const gamesList = document.getElementById("games-list");
   gamesList.innerHTML = "";
   const singleTitle = document.getElementById("single-title");
-  singleTitle.innerText =
-    games.events.length === 17
-      ? games.team.displayName
-      : `Week ${games.week.number}`;
+  singleTitle.innerText = games.events.length === 17 ? games.team.displayName : `Week ${games.week.number}`;
   games = games.events;
   for (let i = 0; i < games.length; i++) {
     const divGroup = document.createElement("div");
@@ -67,13 +64,10 @@ function createMatchup(games) {
       divGroup.appendChild(mainTitle);
       title.innerText = games[i].competitions[0].status.type.detail;
       gamesList.appendChild(divGroup);
-      gamesList.style.gridTemplateColumns =
-        "repeat(auto-fit, minmax(480px, 1fr))";
+      gamesList.style.gridTemplateColumns = "repeat(auto-fit, minmax(480px, 1fr))";
       gamesList.style.display = "grid";
     } else {
-      let container = document.getElementById(
-        games[i].status.type.detail.slice(0, 3).toLowerCase()
-      );
+      let container = document.getElementById(games[i].status.type.detail.slice(0, 3).toLowerCase());
       if (container === null) {
         mainTitle.innerText = dateConverter(games[i].date);
         gamesList.appendChild(mainTitle);
@@ -85,8 +79,7 @@ function createMatchup(games) {
       container.appendChild(divGroup);
       title.innerText = games[i].status.type.detail.slice(-11);
       gamesList.style.display = "";
-      container.style.gridTemplateColumns =
-        "repeat(auto-fit, minmax(480px, 1fr))";
+      container.style.gridTemplateColumns = "repeat(auto-fit, minmax(480px, 1fr))";
     }
     for (let j = 0; j < 2; j++) {
       const button = document.createElement("button");
@@ -96,33 +89,24 @@ function createMatchup(games) {
       logo.className = "logo";
       const name = document.createElement("span");
       name.className = "name";
-      name.innerText =
-        games[i].competitions[0].competitors[j].team.shortDisplayName;
+      name.innerText = games[i].competitions[0].competitors[j].team.shortDisplayName;
       button.appendChild(name);
       button.appendChild(logo);
       logo.setAttribute(
         "src",
-        `https://a.espncdn.com/i/teamlogos/nfl/500/scoreboard/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
+        `https://a.espncdn.com/i/teamlogos/nfl/500/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
       );
       button.addEventListener("click", function () {
         if (button.style.backgroundColor === "") {
           button.style.backgroundColor = `${teamColors[button.textContent][0]}`;
           button.style.color = teamColors[button.textContent][1];
           for (let k = 0; k < 2; k++) {
-            teamRecords[
-              games[i].competitions[0].competitors[Math.abs(k - j)].team
-                .shortDisplayName
-            ][k]++;
+            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k]++;
           }
-          const other = document.getElementById(
-            games[i].competitions[0].competitors[1 - j].team.shortDisplayName
-          );
+          const other = document.getElementById(games[i].competitions[0].competitors[1 - j].team.shortDisplayName);
           if (other.style.backgroundColor !== "") {
             for (let k = 0; k < 2; k++) {
-              teamRecords[
-                games[i].competitions[0].competitors[Math.abs(1 - k - j)].team
-                  .shortDisplayName
-              ][k]--;
+              teamRecords[games[i].competitions[0].competitors[Math.abs(1 - k - j)].team.shortDisplayName][k]--;
             }
           }
           other.style.backgroundColor = "";
@@ -131,12 +115,22 @@ function createMatchup(games) {
           button.style.backgroundColor = "";
           button.style.color = "black";
           for (let k = 0; k < 2; k++) {
-            teamRecords[
-              games[i].competitions[0].competitors[Math.abs(k - j)].team
-                .shortDisplayName
-            ][k]--;
+            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k]--;
           }
         }
+        for (let k = 0; k < 2; k++) {
+          win = document.getElementById(
+            `${games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName}-${k}`
+          );
+          loss = document.getElementById(
+            `${games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName}-${Math.abs(1 - k)}`
+          );
+          win.innerText = teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k];
+          loss.innerText =
+            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][Math.abs(1 - k)];
+        }
+        sorter(document.getElementById("nfc-table"), 1);
+        sorter(document.getElementById("afc-table"), 1);
       });
       buttonGroup.prepend(button);
     }
@@ -173,18 +167,18 @@ async function createSelect() {
     const tableDetailWins = document.createElement("td");
     const tableDetailLosses = document.createElement("td");
     tableDetailName.innerText = teamList[i].team.shortDisplayName;
-    tableDetailWins.innerText = 0;
-    tableDetailWins.id = `${teamList[i].team.shortDisplayName}-wins`;
-    tableDetailLosses.innerText = 0;
-    tableDetailLosses.id = `${teamList[i].team.shortDisplayName}-losses`;
+    tableDetailWins.innerText = teamRecords[teamList[i].team.shortDisplayName][0];
+    tableDetailWins.id = `${teamList[i].team.shortDisplayName}-0`;
+    tableDetailLosses.innerText = teamRecords[teamList[i].team.shortDisplayName][1];
+    tableDetailLosses.id = `${teamList[i].team.shortDisplayName}-1`;
     tableRow.appendChild(tableDetailName);
     tableRow.appendChild(tableDetailWins);
     tableRow.appendChild(tableDetailLosses);
     if (teamList[i].team.conference == "afc") {
-      const tbody = document.getElementById("afc-table");
+      const tbody = document.getElementById("afc-tbody");
       tbody.appendChild(tableRow);
     } else {
-      const tbody = document.getElementById("nfc-table");
+      const tbody = document.getElementById("nfc-tbody");
       tbody.appendChild(tableRow);
     }
   }
@@ -196,14 +190,34 @@ function resetRecords() {
   }
 }
 
+function sorter(table, column) {
+  const tBody = table.tBodies[0];
+  const rows = Array.from(tBody.querySelectorAll("tr"));
+  const sortedRows = rows.sort((a, b) => {
+    const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+    const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+    return aColText > bColText ? -1 : 1;
+  });
+  while (tBody.firstChild) {
+    tBody.removeChild(tBody.firstChild);
+  }
+  tBody.append(...sortedRows);
+}
+
 window.onload = fetchData("week1.json");
 window.onload = createSelect();
 
 const dateConverter = (dateString) => {
   const date = new Date(dateString);
-  const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
-  const month = date.toLocaleDateString("en-US", { month: "long" });
-  const day = date.toLocaleDateString("en-US", { day: "numeric" });
+  const weekday = date.toLocaleDateString("en-US", {
+    weekday: "long",
+  });
+  const month = date.toLocaleDateString("en-US", {
+    month: "long",
+  });
+  const day = date.toLocaleDateString("en-US", {
+    day: "numeric",
+  });
   return `${weekday}, ${month} ${day}`;
 };
 
