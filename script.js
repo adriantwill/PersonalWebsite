@@ -144,8 +144,7 @@ function createMatchup(games) {
                 teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][0]);
           }
         }
-        sorter(document.getElementById("nfc-table"), 1);
-        sorter(document.getElementById("afc-table"), 1);
+        sorter();
       });
       buttonGroup.prepend(button);
     }
@@ -209,18 +208,27 @@ function resetRecords() {
   }
 }
 
-function sorter(table, column) {
-  const tBody = table.tBodies[0];
-  const rows = Array.from(tBody.querySelectorAll("tr"));
-  const sortedRows = rows.sort((a, b) => {
-    const aColText = a.querySelector(`td:nth-child(${column + 3})`).textContent.trim();
-    const bColText = b.querySelector(`td:nth-child(${column + 3})`).textContent.trim();
-    return aColText > bColText ? -1 : 1;
-  });
-  while (tBody.firstChild) {
-    tBody.removeChild(tBody.firstChild);
+function sorter() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("afc-table");
+  switching = true;
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < rows.length - 1; i++) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName("TD")[1];
+      y = rows[i + 1].getElementsByTagName("TD")[1];
+      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
   }
-  tBody.append(...sortedRows);
 }
 
 window.onload = fetchData("week1.json");
