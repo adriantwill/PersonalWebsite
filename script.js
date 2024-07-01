@@ -15,7 +15,26 @@ class SpecialHeader extends HTMLElement {
   }
 }
 
+class SpecialTable extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `
+        <h2></h2>
+         <table class="content-table">
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>Win</th>
+              <th>Loss</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        `;
+  }
+}
+
 customElements.define("nav-matchup", SpecialHeader);
+customElements.define("table-matchup", SpecialTable);
 
 async function fetchData(api) {
   try {
@@ -53,7 +72,6 @@ function createMatchup(games) {
   games = games.events;
   for (let i = 0; i < games.length; i++) {
     const divGroup = document.createElement("div");
-    divGroup.id = "matchup";
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
     const title = document.createElement("h3");
@@ -69,7 +87,7 @@ function createMatchup(games) {
     } else {
       let container = document.getElementById(games[i].status.type.detail.slice(0, 3).toLowerCase());
       if (container === null) {
-        mainTitle.innerText = dateConverter(games[i].date);
+        mainTitle.innerText = games[i].status.type.detail.split(" ").slice(0, 3).join(" ");
         gamesList.appendChild(mainTitle);
         container = document.createElement("div");
         container.className = "weekday";
@@ -84,7 +102,6 @@ function createMatchup(games) {
     for (let j = 0; j < 2; j++) {
       const button = document.createElement("button");
       button.className = elements[j];
-      button.id = games[i].competitions[0].competitors[j].team.shortDisplayName;
       const logo = document.createElement("img");
       logo.className = "logo";
       const name = document.createElement("span");
@@ -129,8 +146,7 @@ function createMatchup(games) {
           loss.innerText =
             teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][Math.abs(1 - k)];
         }
-        sorter("afc-table");
-        sorter("nfc-table");
+        sorter();
       });
       buttonGroup.prepend(button);
     }
@@ -142,6 +158,13 @@ function createMatchup(games) {
 //create default elements here
 
 async function createSelect() {
+  let div = document.getElementById("team-table");
+  let tables = div.querySelectorAll("tbody");
+  tables[0].id = "nfc-tbody";
+  tables[1].id = "afc-tbody";
+  let h2s = div.querySelectorAll("h2");
+  h2s[0].innerText = "NFC Rankings";
+  h2s[1].innerText = "AFC Rankings";
   const week = document.getElementById("week-select");
   for (let i = 1; i <= 18; i++) {
     const option = document.createElement("option");
@@ -166,7 +189,13 @@ async function createSelect() {
     const tableDetailName = document.createElement("td");
     const tableDetailWins = document.createElement("td");
     const tableDetailLosses = document.createElement("td");
-    tableDetailName.innerText = teamList[i].team.shortDisplayName;
+    const spanElement = document.createElement("span");
+    const imgElement = document.createElement("img");
+    spanElement.textContent = teamList[i].team.shortDisplayName;
+    imgElement.setAttribute("src", `https://a.espncdn.com/i/teamlogos/nfl/500/${teamList[i].team.abbreviation}.png`);
+    imgElement.className = "logo";
+    tableDetailName.appendChild(spanElement);
+    tableDetailName.appendChild(imgElement);
     tableDetailWins.innerText = teamRecords[teamList[i].team.shortDisplayName][0];
     tableDetailWins.id = `${teamList[i].team.shortDisplayName}-0`;
     tableDetailLosses.innerText = teamRecords[teamList[i].team.shortDisplayName][1];
@@ -190,101 +219,89 @@ function resetRecords() {
   }
 }
 
-function sorter(tableName) {
+function sorter() {
   var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById(tableName);
-  switching = true;
-  while (switching) {
-    switching = false;
-    rows = table.rows;
-    for (i = 1; i < rows.length - 1; i++) {
-      shouldSwitch = false;
-      x = rows[i].getElementsByTagName("TD")[0];
-      y = rows[i + 1].getElementsByTagName("TD")[0];
-      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-        shouldSwitch = true;
-        break;
+  table = document.querySelectorAll("table");
+  for (let j = 0; j < 2; j++) {
+    switching = true;
+    while (switching) {
+      switching = false;
+      rows = table[j].rows;
+      for (i = 1; i < rows.length - 1; i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[0];
+        y = rows[i + 1].getElementsByTagName("TD")[0];
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
       }
     }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-  switching = true;
-  while (switching) {
-    switching = false;
-    rows = table.rows;
-    for (i = 1; i < rows.length - 1; i++) {
-      shouldSwitch = false;
-      v = rows[i].getElementsByTagName("TD")[2];
-      w = rows[i + 1].getElementsByTagName("TD")[2];
-      x = rows[i].getElementsByTagName("TD")[1];
-      y = rows[i + 1].getElementsByTagName("TD")[1];
-      firstPercent =
-        parseFloat(x.innerHTML.toLowerCase()) /
-        (parseFloat(x.innerHTML.toLowerCase()) + parseFloat(v.innerHTML.toLowerCase()));
-      secondPercent =
-        parseFloat(y.innerHTML.toLowerCase()) /
-        (parseFloat(y.innerHTML.toLowerCase()) + parseFloat(w.innerHTML.toLowerCase()));
-      if (!isFinite(firstPercent)) {
-        firstPercent = 0;
+    switching = true;
+    while (switching) {
+      switching = false;
+      rows = table[j].rows;
+      for (i = 1; i < rows.length - 1; i++) {
+        shouldSwitch = false;
+        v = rows[i].getElementsByTagName("TD")[2];
+        w = rows[i + 1].getElementsByTagName("TD")[2];
+        x = rows[i].getElementsByTagName("TD")[1];
+        y = rows[i + 1].getElementsByTagName("TD")[1];
+        firstPercent =
+          parseFloat(x.innerHTML.toLowerCase()) /
+          (parseFloat(x.innerHTML.toLowerCase()) + parseFloat(v.innerHTML.toLowerCase()));
+        secondPercent =
+          parseFloat(y.innerHTML.toLowerCase()) /
+          (parseFloat(y.innerHTML.toLowerCase()) + parseFloat(w.innerHTML.toLowerCase()));
+        if (!isFinite(firstPercent)) {
+          firstPercent = 0;
+        }
+        if (!isFinite(secondPercent)) {
+          secondPercent = 0;
+        }
+        if (firstPercent < secondPercent) {
+          shouldSwitch = true;
+          break;
+        }
       }
-      if (!isFinite(secondPercent)) {
-        secondPercent = 0;
-      }
-      if (firstPercent < secondPercent) {
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-    }
-  }
-  switching = true;
-  while (switching) {
-    switching = false;
-    rows = table.rows;
-    for (i = 1; i < rows.length - 1; i++) {
-      shouldSwitch = false;
-      x = rows[i].getElementsByTagName("TD")[2];
-      y = rows[i + 1].getElementsByTagName("TD")[2];
-      v = rows[i].getElementsByTagName("TD")[1];
-      w = rows[i + 1].getElementsByTagName("TD")[1];
-      if (
-        x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase() &&
-        w.innerHTML.toLowerCase() == 0 &&
-        v.innerHTML.toLowerCase() == 0
-      ) {
-        shouldSwitch = true;
-        break;
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
       }
     }
-    if (shouldSwitch) {
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
+    switching = true;
+    while (switching) {
+      switching = false;
+      rows = table[j].rows;
+      for (i = 1; i < rows.length - 1; i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[2];
+        y = rows[i + 1].getElementsByTagName("TD")[2];
+        v = rows[i].getElementsByTagName("TD")[1];
+        w = rows[i + 1].getElementsByTagName("TD")[1];
+        if (
+          x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase() &&
+          w.innerHTML.toLowerCase() == 0 &&
+          v.innerHTML.toLowerCase() == 0
+        ) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+      }
     }
   }
 }
 
 window.onload = fetchData("week1.json");
 window.onload = createSelect();
-
-const dateConverter = (dateString) => {
-  const date = new Date(dateString);
-  const weekday = date.toLocaleDateString("en-US", {
-    weekday: "long",
-  });
-  const month = date.toLocaleDateString("en-US", {
-    month: "long",
-  });
-  const day = date.toLocaleDateString("en-US", {
-    day: "numeric",
-  });
-  return `${weekday}, ${month} ${day}`;
-};
 
 let teamRecords = {
   Cardinals: [0, 0],

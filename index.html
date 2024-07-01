@@ -13,40 +13,22 @@
   </head>
   <body>
     <nav-matchup></nav-matchup>
-    <main class="bracket">
+    <main id="main-info">
       <div id="all-selects">
         <div class="select-container">
           <div>Select Week:</div>
-          <select name="" id="week-select"></select>
+          <select id="week-select"></select>
         </div>
         <div class="select-container">
           <div>Select Team:</div>
-          <select name="" id="team-select"></select>
+          <select id="team-select"></select>
         </div>
       </div>
       <h1 id="single-title">Week 1</h1>
       <div id="games-list"></div>
       <div id="team-table">
-        <table id="nfc-table" class="content-table">
-          <thead>
-            <tr>
-              <th>Team</th>
-              <th>Win</th>
-              <th>Loss</th>
-            </tr>
-          </thead>
-          <tbody id="nfc-tbody"></tbody>
-        </table>
-        <table id="afc-table" class="content-table">
-          <thead>
-            <tr>
-              <th>Team</th>
-              <th>Win</th>
-              <th>Loss</th>
-            </tr>
-          </thead>
-          <tbody id="afc-tbody"></tbody>
-        </table>
+        <table-matchup></table-matchup>
+        <table-matchup></table-matchup>
       </div>
     </main>
     <script src="script.js"></script>

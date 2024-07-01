@@ -181,11 +181,13 @@ textarea.input-type {
   color: white;
 }
 
-.bracket h2 {
+#main-info h2 {
   min-width: 480px;
+  margin-top: 30px;
+  text-align: center;
 }
 
-.bracket h1 {
+#main-info h1 {
   min-width: 480px;
   display: flex;
   justify-content: center;
@@ -193,7 +195,7 @@ textarea.input-type {
   margin: 15px 15px 0 15px;
 }
 
-.bracket button {
+#main-info button {
   font-size: 24px;
   padding: 0.5em;
   width: 10em;
@@ -202,28 +204,28 @@ textarea.input-type {
   border: 1px solid black;
 }
 
-.bracket .button-group {
+#main-info .button-group {
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   margin-bottom: 10px;
   background-size: 200% 100%;
 }
 
-.bracket button:hover {
+#main-info button:hover {
   cursor: pointer;
 }
 
-.bracket .away {
+#main-info .away {
   border-radius: 15px 0 0 15px;
   border-right: none;
 }
 
-.bracket .home {
+#main-info .home {
   border-radius: 0 15px 15px 0;
 }
 
 .logo {
-  width: 36px;
+  width: 1.4em;
   float: left;
 }
 
@@ -233,11 +235,6 @@ textarea.input-type {
 
 #games-list {
   justify-items: center;
-}
-
-#games-list h2 {
-  margin-top: 30px;
-  text-align: center;
 }
 
 .weekday {
@@ -274,17 +271,18 @@ select {
 }
 
 #team-table {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(673px, 1fr));
 }
 
 .content-table {
   border-collapse: collapse;
-  margin: 25px 100px;
-  font-size: 20px;
+  font-size: 24px;
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  margin-top: 1em;
 }
 
 .content-table thead tr {
@@ -294,8 +292,12 @@ select {
 
 .content-table th,
 .content-table td {
-  padding: 12px 60px;
+  padding: 0.5em 2.5em;
   text-align: center;
+}
+
+.content-table tr td:first-child {
+  min-width: 200px;
 }
 
 .content-table tbody tr {
