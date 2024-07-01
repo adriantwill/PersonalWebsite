@@ -97,20 +97,20 @@ function createMatchup(games) {
         `https://a.espncdn.com/i/teamlogos/nfl/500/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
       );
       button.addEventListener("click", function () {
+        let buttons = buttonGroup.querySelectorAll("button");
         if (button.style.backgroundColor === "") {
           button.style.backgroundColor = `${teamColors[button.textContent][0]}`;
           button.style.color = teamColors[button.textContent][1];
           for (let k = 0; k < 2; k++) {
             teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k]++;
           }
-          const other = document.getElementById(games[i].competitions[0].competitors[1 - j].team.shortDisplayName);
-          if (other.style.backgroundColor !== "") {
+          if (buttons[j].style.backgroundColor !== "") {
             for (let k = 0; k < 2; k++) {
               teamRecords[games[i].competitions[0].competitors[Math.abs(1 - k - j)].team.shortDisplayName][k]--;
             }
           }
-          other.style.backgroundColor = "";
-          other.style.color = "black";
+          buttons[j].style.backgroundColor = "";
+          buttons[j].style.color = "black";
         } else {
           button.style.backgroundColor = "";
           button.style.color = "black";
@@ -128,23 +128,9 @@ function createMatchup(games) {
           win.innerText = teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k];
           loss.innerText =
             teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][Math.abs(1 - k)];
-          percent = document.getElementById(
-            `${games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName}-2`
-          );
-          if (
-            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][1] +
-              teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][0] ===
-            0
-          ) {
-            percent.innerText = 0.0001;
-          } else {
-            percent.innerText =
-              teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][0] /
-              (teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][1] +
-                teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][0]);
-          }
         }
-        sorter();
+        sorter("afc-table");
+        sorter("nfc-table");
       });
       buttonGroup.prepend(button);
     }
@@ -180,18 +166,14 @@ async function createSelect() {
     const tableDetailName = document.createElement("td");
     const tableDetailWins = document.createElement("td");
     const tableDetailLosses = document.createElement("td");
-    const tableDetailPercentage = document.createElement("td");
     tableDetailName.innerText = teamList[i].team.shortDisplayName;
     tableDetailWins.innerText = teamRecords[teamList[i].team.shortDisplayName][0];
     tableDetailWins.id = `${teamList[i].team.shortDisplayName}-0`;
     tableDetailLosses.innerText = teamRecords[teamList[i].team.shortDisplayName][1];
     tableDetailLosses.id = `${teamList[i].team.shortDisplayName}-1`;
-    tableDetailPercentage.innerText = 0.0001;
-    tableDetailPercentage.id = `${teamList[i].team.shortDisplayName}-2`;
     tableRow.appendChild(tableDetailName);
     tableRow.appendChild(tableDetailWins);
     tableRow.appendChild(tableDetailLosses);
-    tableRow.appendChild(tableDetailPercentage);
     if (teamList[i].team.conference == "afc") {
       const tbody = document.getElementById("afc-tbody");
       tbody.appendChild(tableRow);
@@ -208,18 +190,74 @@ function resetRecords() {
   }
 }
 
-function sorter() {
+function sorter(tableName) {
   var table, rows, switching, i, x, y, shouldSwitch;
-  table = document.getElementById("afc-table");
+  table = document.getElementById(tableName);
   switching = true;
   while (switching) {
     switching = false;
     rows = table.rows;
     for (i = 1; i < rows.length - 1; i++) {
       shouldSwitch = false;
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+  switching = true;
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < rows.length - 1; i++) {
+      shouldSwitch = false;
+      v = rows[i].getElementsByTagName("TD")[2];
+      w = rows[i + 1].getElementsByTagName("TD")[2];
       x = rows[i].getElementsByTagName("TD")[1];
       y = rows[i + 1].getElementsByTagName("TD")[1];
-      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+      firstPercent =
+        parseFloat(x.innerHTML.toLowerCase()) /
+        (parseFloat(x.innerHTML.toLowerCase()) + parseFloat(v.innerHTML.toLowerCase()));
+      secondPercent =
+        parseFloat(y.innerHTML.toLowerCase()) /
+        (parseFloat(y.innerHTML.toLowerCase()) + parseFloat(w.innerHTML.toLowerCase()));
+      if (!isFinite(firstPercent)) {
+        firstPercent = 0;
+      }
+      if (!isFinite(secondPercent)) {
+        secondPercent = 0;
+      }
+      if (firstPercent < secondPercent) {
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+  switching = true;
+  while (switching) {
+    switching = false;
+    rows = table.rows;
+    for (i = 1; i < rows.length - 1; i++) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName("TD")[2];
+      y = rows[i + 1].getElementsByTagName("TD")[2];
+      v = rows[i].getElementsByTagName("TD")[1];
+      w = rows[i + 1].getElementsByTagName("TD")[1];
+      if (
+        x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase() &&
+        w.innerHTML.toLowerCase() == 0 &&
+        v.innerHTML.toLowerCase() == 0
+      ) {
         shouldSwitch = true;
         break;
       }
