@@ -61,7 +61,7 @@ async function fetchTeams(api) {
   } catch (error) {
     console.error(error);
   }
-}
+} //combine api's
 
 function createMatchup(games) {
   const elements = ["home", "away"];
