@@ -155,7 +155,7 @@ function createMatchup(games) {
   }
 }
 
-//create default elements here
+//create default elements here and create long term
 
 async function createSelect() {
   let div = document.getElementById("team-table");
