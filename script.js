@@ -213,12 +213,6 @@ async function createSelect() {
   }
 }
 
-function resetRecords() {
-  for (let team in teamRecords) {
-    teamRecords[team] = [0, 0];
-  }
-}
-
 function sorter() {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.querySelectorAll("table");
