@@ -214,6 +214,7 @@ async function createSelect() {
 }
 
 function resetRecords() {
+  //reset button to add
   for (let team in teamRecords) {
     teamRecords[team] = [0, 0];
   }
