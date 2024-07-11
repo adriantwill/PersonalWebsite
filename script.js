@@ -102,6 +102,8 @@ function createMatchup(games) {
     for (let j = 0; j < 2; j++) {
       const button = document.createElement("button");
       button.className = elements[j];
+      button.id = `${games[i].week.number}-${games[i].competitions[0].competitors[j].team.abbreviation}`;
+      loadButtonState(button);
       const logo = document.createElement("img");
       logo.className = "logo";
       const name = document.createElement("span");
@@ -147,6 +149,7 @@ function createMatchup(games) {
             teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][Math.abs(1 - k)];
         }
         sorter();
+        saveButtonState(button);
       });
       buttonGroup.prepend(button);
     }
@@ -298,6 +301,26 @@ function sorter() {
         switching = true;
       }
     }
+  }
+}
+
+function saveButtonState(button) {
+  const buttonId = button.id;
+  const buttonState = {
+    backgroundColor: button.style.backgroundColor,
+    color: button.style.color,
+  };
+  localStorage.setItem(buttonId, JSON.stringify(buttonState));
+}
+
+// Function to load the state of a button
+function loadButtonState(button) {
+  const buttonId = button.id;
+  const savedState = localStorage.getItem(buttonId);
+  if (savedState) {
+    const buttonState = JSON.parse(savedState);
+    button.style.backgroundColor = buttonState.backgroundColor;
+    button.style.color = buttonState.color;
   }
 }
 
