@@ -117,15 +117,24 @@ function createMatchup(games) {
       );
       button.addEventListener("click", function () {
         let buttons = buttonGroup.querySelectorAll("button");
+        let otherTeam = document.getElementById(
+          `${games[i].week.number}-${games[i].competitions[0].competitors[1 - j].team.abbreviation}`
+        );
         if (button.style.backgroundColor === "") {
           button.style.backgroundColor = `${teamColors[button.textContent][0]}`;
           button.style.color = teamColors[button.textContent][1];
           for (let k = 0; k < 2; k++) {
-            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k]++;
+            modifyLocalStorageValue(
+              `${games[i].competitions[0].competitors[Math.abs(k - j)].team.abbreviation}-${k}`,
+              true
+            );
           }
           if (buttons[j].style.backgroundColor !== "") {
             for (let k = 0; k < 2; k++) {
-              teamRecords[games[i].competitions[0].competitors[Math.abs(1 - k - j)].team.shortDisplayName][k]--;
+              modifyLocalStorageValue(
+                `${games[i].competitions[0].competitors[Math.abs(1 - k - j)].team.abbreviation}-${k}`,
+                false
+              );
             }
           }
           buttons[j].style.backgroundColor = "";
@@ -134,7 +143,10 @@ function createMatchup(games) {
           button.style.backgroundColor = "";
           button.style.color = "black";
           for (let k = 0; k < 2; k++) {
-            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k]--;
+            modifyLocalStorageValue(
+              `${games[i].competitions[0].competitors[Math.abs(k - j)].team.abbreviation}-${k}`,
+              false
+            );
           }
         }
         for (let k = 0; k < 2; k++) {
@@ -144,12 +156,16 @@ function createMatchup(games) {
           loss = document.getElementById(
             `${games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName}-${Math.abs(1 - k)}`
           );
-          win.innerText = teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][k];
-          loss.innerText =
-            teamRecords[games[i].competitions[0].competitors[Math.abs(k - j)].team.shortDisplayName][Math.abs(1 - k)];
+          win.innerText = localStorage.getItem(
+            `${games[i].competitions[0].competitors[Math.abs(k - j)].team.abbreviation}-${k}`
+          );
+          loss.innerText = localStorage.getItem(
+            `${games[i].competitions[0].competitors[Math.abs(k - j)].team.abbreviation}-${Math.abs(1 - k)}`
+          );
         }
         sorter();
         saveButtonState(button);
+        saveButtonState(otherTeam);
       });
       buttonGroup.prepend(button);
     }
@@ -199,9 +215,19 @@ async function createSelect() {
     imgElement.className = "logo";
     tableDetailName.appendChild(spanElement);
     tableDetailName.appendChild(imgElement);
-    tableDetailWins.innerText = teamRecords[teamList[i].team.shortDisplayName][0];
+    let winLossValue = localStorage.getItem(`${teamList[i].team.abbreviation}-0`);
+    if (winLossValue === null) {
+      winLossValue = 0;
+      localStorage.setItem(`${teamList[i].team.abbreviation}-0`, "0");
+    }
+    tableDetailWins.innerText = winLossValue;
     tableDetailWins.id = `${teamList[i].team.shortDisplayName}-0`;
-    tableDetailLosses.innerText = teamRecords[teamList[i].team.shortDisplayName][1];
+    winLossValue = localStorage.getItem(`${teamList[i].team.abbreviation}-1`);
+    if (winLossValue === null) {
+      winLossValue = 0;
+      localStorage.setItem(`${teamList[i].team.abbreviation}-1`, "0");
+    }
+    tableDetailLosses.innerText = winLossValue;
     tableDetailLosses.id = `${teamList[i].team.shortDisplayName}-1`;
     tableRow.appendChild(tableDetailName);
     tableRow.appendChild(tableDetailWins);
@@ -214,13 +240,12 @@ async function createSelect() {
       tbody.appendChild(tableRow);
     }
   }
+  sorter();
 }
 
 function resetRecords() {
-  //reset button to add here
-  for (let team in teamRecords) {
-    teamRecords[team] = [0, 0];
-  }
+  localStorage.clear();
+  location.reload();
 }
 
 function sorter() {
@@ -324,43 +349,19 @@ function loadButtonState(button) {
   }
 }
 
+function modifyLocalStorageValue(key, increment) {
+  let currentValue = localStorage.getItem(key);
+  currentValue = parseInt(currentValue, 10);
+  if (increment) {
+    currentValue++;
+  } else {
+    currentValue--;
+  }
+  localStorage.setItem(key, currentValue.toString());
+}
+
 window.onload = fetchData("week1.json");
 window.onload = createSelect();
-
-let teamRecords = {
-  Cardinals: [0, 0],
-  Falcons: [0, 0],
-  Ravens: [0, 0],
-  Bills: [0, 0],
-  Panthers: [0, 0],
-  Bears: [0, 0],
-  Bengals: [0, 0],
-  Browns: [0, 0],
-  Cowboys: [0, 0],
-  Broncos: [0, 0],
-  Lions: [0, 0],
-  Packers: [0, 0],
-  Texans: [0, 0],
-  Colts: [0, 0],
-  Jaguars: [0, 0],
-  Chiefs: [0, 0],
-  Raiders: [0, 0],
-  Chargers: [0, 0],
-  Rams: [0, 0],
-  Dolphins: [0, 0],
-  Vikings: [0, 0],
-  Patriots: [0, 0],
-  Saints: [0, 0],
-  Giants: [0, 0],
-  Jets: [0, 0],
-  Eagles: [0, 0],
-  Steelers: [0, 0],
-  "49ers": [0, 0],
-  Seahawks: [0, 0],
-  Buccaneers: [0, 0],
-  Titans: [0, 0],
-  Commanders: [0, 0],
-};
 
 const teamColors = {
   Cardinals: ["#97233F", "#000000"],

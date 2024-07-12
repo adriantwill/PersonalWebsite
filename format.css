@@ -284,7 +284,7 @@ select:hover {
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-  margin: 1em 0;
+  margin-top: 0.5em;
 }
 
 .content-table thead tr {
@@ -308,4 +308,17 @@ select:hover {
 
 .content-table tbody tr:nth-of-type(odd) {
   background-color: #f3f3f3;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#main-info #reset {
+  font-size: 100%;
+  border-radius: 10px;
+  margin: 1em;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 }
