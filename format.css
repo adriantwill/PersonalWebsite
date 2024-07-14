@@ -263,3 +263,31 @@ select:hover {
   background: #526d82;
   color: white;
 }
+
+.table-rankings tr:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.02);
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2), -1px -1px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-out 0s;
+}
+
+.table-rankings img {
+  width: 15%;
+  margin-right: 0.5em;
+}
+
+@media (max-width: 650px) {
+  th {
+    display: none;
+  }
+  td {
+    display: grid;
+    grid-template-columns: 15ch auto;
+    gap: 0.5rem;
+  }
+  td::before {
+    content: attr(data-cell) ": ";
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+}
