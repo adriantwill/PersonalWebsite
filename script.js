@@ -18,8 +18,8 @@ class SpecialHeader extends HTMLElement {
 class SpecialTable extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-        <h2></h2>
-         <table class="content-table">
+         <table class="standings-table">
+         <caption></caption>
           <thead>
             <tr>
               <th>Team</th>
@@ -102,19 +102,17 @@ function createMatchup(games) {
     for (let j = 0; j < 2; j++) {
       const button = document.createElement("button");
       button.className = elements[j];
-      button.id = `${games[i].week.number}-${games[i].competitions[0].competitors[j].team.abbreviation}`;
+      let teamsList = games[i].competitions[0].competitors[j].team;
+      button.id = `${games[i].week.number}-${teamsList.abbreviation}`;
       loadButtonState(button);
       const logo = document.createElement("img");
       logo.className = "logo";
       const name = document.createElement("span");
       name.className = "name";
-      name.innerText = games[i].competitions[0].competitors[j].team.shortDisplayName;
+      name.innerText = teamsList.shortDisplayName;
       button.appendChild(name);
       button.appendChild(logo);
-      logo.setAttribute(
-        "src",
-        `https://a.espncdn.com/i/teamlogos/nfl/500/${games[i].competitions[0].competitors[j].team.abbreviation}.png`
-      );
+      logo.setAttribute("src", `https://a.espncdn.com/i/teamlogos/nfl/500/${teamsList.abbreviation}.png`);
       button.addEventListener("click", function () {
         let buttons = buttonGroup.querySelectorAll("button");
         let otherTeam = document.getElementById(
@@ -135,6 +133,7 @@ function createMatchup(games) {
                 `${games[i].competitions[0].competitors[Math.abs(1 - k - j)].team.abbreviation}-${k}`,
                 false
               );
+              console.log(Math.abs(1 - k - j));
             }
           }
           buttons[j].style.backgroundColor = "";
@@ -181,9 +180,9 @@ async function createSelect() {
   let tables = div.querySelectorAll("tbody");
   tables[0].id = "nfc-tbody";
   tables[1].id = "afc-tbody";
-  let h2s = div.querySelectorAll("h2");
-  h2s[0].innerText = "NFC Rankings";
-  h2s[1].innerText = "AFC Rankings";
+  let captions = div.querySelectorAll("caption");
+  captions[0].innerText = "NFC Rankings";
+  captions[1].innerText = "AFC Rankings";
   const week = document.getElementById("week-select");
   for (let i = 1; i <= 18; i++) {
     const option = document.createElement("option");
@@ -204,6 +203,9 @@ async function createSelect() {
       `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamList[i].team.id}/schedule?season=2024')`
     );
     team.appendChild(option);
+  }
+  teamList = await fetchTeams("teams.json");
+  for (let i = 0; i < 32; i++) {
     const tableRow = document.createElement("tr");
     const tableDetailName = document.createElement("td");
     const tableDetailWins = document.createElement("td");
@@ -217,8 +219,10 @@ async function createSelect() {
     tableDetailName.appendChild(imgElement);
     let winLossValue = localStorage.getItem(`${teamList[i].team.abbreviation}-0`);
     if (winLossValue === null) {
-      winLossValue = 0;
+      winLossValue = 0; //TODO change to current value from api
       localStorage.setItem(`${teamList[i].team.abbreviation}-0`, "0");
+    } else {
+      changed = true;
     }
     tableDetailWins.innerText = winLossValue;
     tableDetailWins.id = `${teamList[i].team.shortDisplayName}-0`;
@@ -240,36 +244,15 @@ async function createSelect() {
       tbody.appendChild(tableRow);
     }
   }
-  sorter();
-}
-
-function resetRecords() {
-  localStorage.clear();
-  location.reload();
+  if (localStorage.length !== 0) {
+    sorter();
+  }
 }
 
 function sorter() {
   var table, rows, switching, i, x, y, shouldSwitch;
   table = document.querySelectorAll("table");
   for (let j = 0; j < 2; j++) {
-    switching = true;
-    while (switching) {
-      switching = false;
-      rows = table[j].rows;
-      for (i = 1; i < rows.length - 1; i++) {
-        shouldSwitch = false;
-        x = rows[i].getElementsByTagName("TD")[0];
-        y = rows[i + 1].getElementsByTagName("TD")[0];
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
-        }
-      }
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-      }
-    }
     switching = true;
     while (switching) {
       switching = false;
