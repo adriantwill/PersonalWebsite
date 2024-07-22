@@ -16,6 +16,7 @@ class SpecialHeader extends HTMLElement {
 }
 
 class SpecialTable extends HTMLElement {
+  //test
   connectedCallback() {
     this.innerHTML = `
          <table class="standings-table">
