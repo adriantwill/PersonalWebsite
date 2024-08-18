@@ -7,7 +7,6 @@ class SpecialHeader extends HTMLElement {
         <nav>
         <ul class="test">
           <li><a href="index.html">Home</a></li>
-          <li><a href="contact.html">About Me</a></li>
         </ul>
       </nav>
     </header>
@@ -16,7 +15,6 @@ class SpecialHeader extends HTMLElement {
 }
 
 class SpecialTable extends HTMLElement {
-  //teste uri22 w d
   connectedCallback() {
     this.innerHTML = `
          <table class="standings-table">
