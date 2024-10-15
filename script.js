@@ -43,6 +43,7 @@ async function fetchData(api) {
     }
     const data = await response.json();
     createMatchup(data);
+    console.log('here4')
   } catch (error) {
     console.error(error);
   }
@@ -56,6 +57,7 @@ async function fetchTeams(api) {
     }
     const data = await response.json();
     const games = data.sports[0].leagues[0].teams;
+     console.log('here3')
     return games;
   } catch (error) {
     console.error(error);
@@ -186,23 +188,25 @@ async function createSelect() {
   for (let i = 1; i <= 18; i++) {
     const option = document.createElement("option");
     option.innerText = `Week ${i}`;
-    option.setAttribute(
-      "onclick",
-      `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${i}')`
-    );
+    option.value = i
     week.appendChild(option);
   }
+  week.addEventListener('change', function() {
+    var value = this.options[this.selectedIndex].value;
+    fetchData(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?limit=1000&dates=2024&seasontype=2&week=${value}`);
+  });
   const team = document.getElementById("team-select"); //add team based on team.json and id for calling api
   teamList = await fetchTeams("teams.json");
   for (let i = 0; i < 32; i++) {
     const option = document.createElement("option");
     option.innerText = teamList[i].team.shortDisplayName;
-    option.setAttribute(
-      "onclick",
-      `fetchData('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamList[i].team.id}/schedule?season=2024')`
-    );
+    option.value = teamList[i].team.id
     team.appendChild(option);
   }
+  team.addEventListener('change', function() {
+    var value = this.options[this.selectedIndex].value;
+    fetchData(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${value}/schedule?season=2024`);
+  });
   teamList = await fetchTeams("teams.json");
   for (let i = 0; i < 32; i++) {
     const tableRow = document.createElement("tr");
